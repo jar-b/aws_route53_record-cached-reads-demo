@@ -6,23 +6,23 @@ A demo of the experimental "cached read" feature for the `aws_route53_record` Te
 
 The demo is intended to showcase how the current design of `aws_route53_record` can trigger request throttling in workspaces with many managed records in a single hosted zone. To compare the default behavior against the experimental read cache, an existing hosted zone and set of records must be provisioned.
 
-```console
+```shell
 terraform init
 ```
 
-```console
+```shell
 terraform apply
 ```
 
 Once in place, compare the behavior of a standard `terraform plan` against a `make plan` (local provider build needed until `v6.67.0` is released) with `TF_AWS_ROUTE53_RECORD_BATCH_READS=1` set.
 
-```console
+```shell
 # in quiet accounts, this may need to run multiple times
 # to trigger throttling + retry backoff in the provider
 terraform plan
 ```
 
-```console
+```shell
 # this should be fast
 TF_AWS_ROUTE53_RECORD_BATCH_READS=1 make plan
 ```
@@ -31,6 +31,6 @@ TF_AWS_ROUTE53_RECORD_BATCH_READS=1 make plan
 
 Requires [`slides`](https://github.com/maaslalani/slides) to be installed.
 
-```console
+```shell
 slides SLIDES.md
 ```
