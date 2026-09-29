@@ -1,3 +1,36 @@
 # aws_route53_record-cached-reads-demo
 
-A demo of the experimental cached read behavior for the aws_route53_record Terraform resource.
+A demo of the experimental "cached read" feature for the `aws_route53_record` Terraform resource.
+
+## Running the Demo
+
+The demo is intended to showcase how the current design of `aws_route53_record` can trigger request throttling in workspaces with many managed records in a single hosted zone. To compare the default behavior against the experimental read cache, an existing hosted zone and set of records must be provisioned.
+
+```console
+terraform init
+```
+
+```console
+terraform apply
+```
+
+Once in place, compare the behavior of a standard `terraform plan` against a `make plan` (local provider build needed until `v6.67.0` is released) with `TF_AWS_ROUTE53_RECORD_BATCH_READS=1` set.
+
+```console
+# in quiet accounts, this may need to run multiple times
+# to trigger throttling + retry backoff in the provider
+terraform plan
+```
+
+```console
+# this should be fast
+TF_AWS_ROUTE53_RECORD_BATCH_READS=1 make plan
+```
+
+## Viewing the Slides
+
+Requires [`slides`](https://github.com/maaslalani/slides) to be installed.
+
+```console
+slides SLIDES.md
+```
